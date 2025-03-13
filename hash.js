@@ -1,8 +1,10 @@
+import { linkedList } from "./linkedList.js"
+
 class HashMap {
   constructor(capacity, load) {
-    this.bucket = []
+    this.buckets = []
     for (let i = 0; i < capacity; i++) {
-      this.bucket.push([])
+      this.buckets.push([])
     }
     this.capacity = capacity
     this.load = load
@@ -21,7 +23,7 @@ class HashMap {
   }
 
   set(key, value) {
-    let bucket = this.bucket[this.hash(key)];
+    let bucket = this.buckets[this.hash(key)];
     for (const obj of bucket) {
       if (obj[key] !== undefined) {
         obj[key] = value;
@@ -32,7 +34,7 @@ class HashMap {
   }
 
   get(key) {
-    let bucket = this.bucket[this.hash(key)];
+    let bucket = this.buckets[this.hash(key)];
     for (const obj of bucket) {
       if (obj[key] !== undefined) {
         return obj[key];
@@ -42,7 +44,7 @@ class HashMap {
   }
 
   has(key) {
-    let bucket = this.bucket[this.hash(key)];
+    let bucket = this.buckets[this.hash(key)];
     for (const obj of bucket) {
       if (obj[key] !== undefined) {
         return true
@@ -52,7 +54,7 @@ class HashMap {
   }
 
   remove(key) {
-    let bucket = this.bucket[this.hash(key)];
+    let bucket = this.buckets[this.hash(key)];
     let index = 0;
     for (const obj of bucket) {
       if (obj[key] !== undefined) {
@@ -63,6 +65,10 @@ class HashMap {
     }
     return false
   }
+
+  length() {
+    
+  }
 }
 
 const test = new HashMap(8, 1);
@@ -70,4 +76,4 @@ console.log(test.hash('testr'))
 console.log(test.hash('blabla'))
 test.set('testr', 'value1')
 test.set('blabla', 'value1')
-console.log(test.bucket)
+console.log(test.buckets)
