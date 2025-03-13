@@ -38,4 +38,4 @@ setTimeout(() => {
   console.log(test.hash('example1'));
   test.set('example1', 'value1');
   console.log(test.bucket);
-}, 1000)
+}, 0)
