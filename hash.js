@@ -115,17 +115,50 @@ class HashMap {
       }
       else {
         let list = bucket[0];
-        
+        let current = list.head;
+        while (current !== null) {
+          keysArr.push(current.key);
+          current = current.next;
+        }
       }
     }
+    return keysArr;
   }
 
   values() {
-
+    let valuesArr = [];
+    for (let bucket of this.buckets) {
+      if (bucket.length === 0) {
+        continue;
+      }
+      else {
+        let list = bucket[0];
+        let current = list.head;
+        while (current !== null) {
+          valuesArr.push(current.value);
+          current = current.next;
+        }
+      }
+    }
+    return valuesArr;
   }
 
   entries() {
-
+    let entriesArr = [];
+    for (let bucket of this.buckets) {
+      if (bucket.length === 0) {
+        continue;
+      }
+      else {
+        let list = bucket[0];
+        let current = list.head;
+        while (current !== null) {
+          entriesArr.push([current.key, current.value]);
+          current = current.next;
+        }
+      }
+    }
+    return entriesArr;
   }
 }
 
@@ -133,10 +166,7 @@ const test = new HashMap(8, 1);
 test.set('testr', 'value0');
 test.set('blabla', 'value1');
 test.set('tea', 'value2');
+test.set('bla','value3')
 setTimeout(() => {  
-  console.log(test);
-  test.clear()
-}, 0)
-setTimeout(() => {
-  console.log(test);
+  console.log(test.entries());
 }, 0)
