@@ -65,21 +65,26 @@ class HashMap {
 
   has(key) {
     let bucket = this.buckets[this.hash(key)];
+    if (bucket.length === 0) {
+      return false;
+    }
     let list = bucket[0];
-    return list.contains(key)
+    return list.contains(key);
+
   }
 
   remove(key) {
     let bucket = this.buckets[this.hash(key)];
-    let index = 0;
-    for (const obj of bucket) {
-      if (obj[key] !== undefined) {
-        bucket.splice(index, 1)
-        return true
-      }
-      index++;
+    if (bucket.length === 0) {
+      return false;
     }
-    return false
+    let list = bucket[0];
+    const index = list.find(key);
+    if (list.find(key)) {
+      list.removeAt(index);
+      return true;
+    }
+    return false;
   }
 
   length() {
@@ -88,8 +93,12 @@ class HashMap {
 }
 
 const test = new HashMap(8, 1);
-const test_list = test.buckets[0][0];
+const test_list = test.buckets[0];
 test.set('testr', 'value0');
 test.set('blabla', 'value1');
 test.set('tea', 'value2');
-console.log(test.has('testr'))
+console.log(test_list[0]);
+setTimeout(() => {
+  test.remove('blabla');
+  console.log(test_list[0]);
+}, 0)
