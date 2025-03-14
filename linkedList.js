@@ -78,6 +78,7 @@ class LinkedList {
       current = current.next;
     }
     current.next = null;
+    this.size--;
   }
 
   contains(key) {
@@ -87,7 +88,7 @@ class LinkedList {
     let current = this.head;
     while (current.key != key) {
       current = current.next;
-      if (current == null) {
+      if (current === null) {
         return false;
       }
     }
@@ -104,7 +105,7 @@ class LinkedList {
       count++;
       current = current.next;
       if (current === null) {
-        return null
+        return null;
       }
     }
     return count;
@@ -143,6 +144,7 @@ class LinkedList {
       const node = new Node(key, value);
       node.next = current.next;
       current.next = node;
+      this.size++;
     }
   }
 
@@ -167,6 +169,7 @@ class LinkedList {
     let copyOfRemoved = current.next;
     current.next = current.next.next
     copyOfRemoved.next = null;
+    this.size--;
   }
 }
 
