@@ -1,84 +1,92 @@
-const createNode = (key = null, value = null, next = null) => {
-  return {
-    key,
-    value,
-    next,
+class Node {
+  constructor(key = null, value = null, next = null) {
+    this.key = key;
+    this.value = value;
+    this.next = next;
   }
 }
 
-const linkedList = () => {
-  const headNode = createNode('head');
-  const tailNode = createNode('tail');
-  headNode.next = tailNode;
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.size = 0;
+  }
 
-  const append = (key) => {
-    const newNode = createNode(key);
-    newNode.next = tailNode;
-    let current = headNode;
-
-    while (current.next != tailNode) {
-      current = current.next;
+  append(key, value) {
+    const node = new Node(key, value);
+    if (this.size === 0) {
+      this.head = node;
     }
-
-    current.next = newNode;
+    else {
+      let current = this.head;
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = node;
+    }
+    this.size++;
   }
 
-  const prepend = (key) => {
-    const newNode = createNode(key);
-    const currentFirst = headNode.next;
-    newNode.next = currentFirst;
-    headNode.next = newNode;
+  prepend(key, value) {
+    const node = new Node(key, value)
+    if (this.size === 0) {
+      this.head = node;
+    }
+    else {
+      let current = this.head;
+      node.next = current;
+      this.head = node;      
+    }
+    this.size++;
   }
 
-  const size = () => {
-    let count = 1;
-    let current = headNode;
-    while (current != tailNode) {
+  getSize() {
+    return this.size;
+  }
+
+  getHead() {
+    return this.head;
+  }
+
+  getTail() {
+    let current = this.head;
+    while(current.next) {
+      current = current.next
+    }
+    return current;
+  }
+
+  at(index) {
+    if (index < 0 || index > (+this.getSize() - 1)) {
+      throw new Error('Trying to access index out of bounds'); 
+    }
+    let count = 0;
+    let current = this.head;
+    while (count != index) {
       count++;
-      current = current.next;
-    }
-    return count;
-  }
-
-  const head = () => {
-    return headNode.next;
-  }
-
-  const tail = () => {
-    let current = headNode;
-    while (current.next != tailNode) {
       current = current.next;
     }
     return current;
   }
 
-  const at = (index) => {
-    try {
-      let current = headNode.next;
-      for (let count = 1; count < index; count++) {
-        current = current.next;
-      }
-
-      return current;
+  pop() {
+    if (this.head === null) {
+      throw new Error('Trying to pop an empty list');
     }
-    catch (error) {
-      throw new Error('Please provide a valid index');
-    }
-  }
-
-  const pop = () => {
-    let current = headNode;
-    while (current.next.next != tailNode) {
+    let current = this.head;
+    while (current.next.next) {
       current = current.next;
     }
-    current.next.next = null;
-    current.next = tailNode;
+    current.next = null;
   }
 
-  const contains = (key) => {
-    let current = headNode;
-    while (current != tailNode) {
-      if (current.key === key) {
+  contains(key) {
+    if (this.head === null) {
+      return false;
+    }
+    let current = this.head;
+    while (current.next) {
+      if (current.key == key) {
         return true
       }
       current = current.next;
@@ -86,70 +94,78 @@ const linkedList = () => {
     return false
   }
 
-  const find = (key) => {
-    let current = headNode;
+  find(key) {
+    if (this.head === null) {
+      return null;
+    }
     let count = 0;
-    while (current != tailNode) {
+    let current = this.head;
+    while (current.next) {
       if (current.key === key) {
-        return count
+        return count;
       }
       count++;
       current = current.next;
     }
-    return null
+    return null;
   }
 
-  const toString = () => {
-    let current = headNode.next;
+  toString() {
+    if (this.head === null) {
+      console.log(null);
+      return null;
+    }
     let string = ''
-    while (current != tailNode) {
-      string += `( ${current.key} ) -> `;
+    let current = this.head;
+    while (current.next) {
+      string += `( ${current.value} ) -> `;
       current = current.next;
     }
     string += 'null';
     console.log(string);
+    return string;
   }
 
-  const insertAt = (key, index) => {
-    const newNode = createNode(key);
-    let current = headNode;
-    let count = 0;
-    while (count != index - 1) {
-      count++;
-      current = current.next;
+  insertAt(key, value, index) {
+    if (index < 0 || index > (+this.getSize() - 1)) {
+      throw new Error('Trying to access index out of bounds'); 
     }
-    newNode.next = current.next;
-    current.next = newNode;
-  }
-
-  const removeAt = (index) => {
-    let current = headNode;
-    let count = 0;
-    while (count != index - 1) {
-      count++;
-      current = current.next;
+    if (index === 0) {
+      this.prepend(key, value)
     }
-    let removed = current.next;
-    current.next = current.next.next;
-    removed.next = null;
+    else {
+      let count = 0;
+      let current = this.head;
+      while (count != (index - 1)) {
+        count++;
+        current = current.next;
+      }
+      const node = new Node(key, value);
+      node.next = current.next;
+      current.next = node;
+    }
   }
 
-  return {
-    headNode,
-    tailNode,
-    append,
-    prepend,
-    size,
-    head,
-    tail,
-    at,
-    pop,
-    contains,
-    find,
-    toString,
-    insertAt,
-    removeAt,
+  removeAt(index) {
+    if (index < 0 || index > (+this.getSize() - 1)) {
+      throw new Error('Trying to access index out of bounds'); 
+    }
+    if (this.head === null) {
+      throw new Error('Trying to remove from an empty list');
+    }
+    let count = 0;
+    let current = this.head;
+    while (count != (index - 1)) {
+      if (current.next === null) {
+        this.pop();
+      }
+      else {
+        count++;
+        current = current.next;
+      }
+    }
+    let copyOfRemoved = current.next;
+    current.next = current.next.next
+    copyOfRemoved.next = null;
   }
 }
-
-export { linkedList }
