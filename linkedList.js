@@ -85,13 +85,13 @@ class LinkedList {
       return false;
     }
     let current = this.head;
-    while (current.next) {
-      if (current.key == key) {
-        return true
-      }
+    while (current.key != key) {
       current = current.next;
+      if (current == null) {
+        return false;
+      }
     }
-    return false
+    return true;
   }
 
   find(key) {
@@ -100,14 +100,14 @@ class LinkedList {
     }
     let count = 0;
     let current = this.head;
-    while (current.next) {
-      if (current.key === key) {
-        return count;
-      }
+    while(current.key != key) {
       count++;
       current = current.next;
+      if (current === null) {
+        return null
+      }
     }
-    return null;
+    return count;
   }
 
   toString() {
@@ -169,3 +169,5 @@ class LinkedList {
     copyOfRemoved.next = null;
   }
 }
+
+export { Node, LinkedList }
