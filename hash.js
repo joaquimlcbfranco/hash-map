@@ -1,4 +1,4 @@
-import { linkedList } from "./linkedList.js"
+import { Node, LinkedList } from "./linkedList.js"
 
 class HashMap {
   constructor(capacity, load) {
@@ -24,33 +24,49 @@ class HashMap {
 
   set(key, value) {
     let bucket = this.buckets[this.hash(key)];
-    for (const obj of bucket) {
-      if (obj[key] !== undefined) {
-        obj[key] = value;
-        return;
+    if (bucket.length === 0) {
+      const list = new LinkedList();
+      list.append(key, value);
+      bucket.push(list);
+    }
+    else {
+      const list = bucket[0];
+      const index = list.find(key);
+      if (list.contains(key)) {
+        let count = 0;
+        let current = list.head;
+        while (count !== index) {
+          count++;
+          current = current.next;
+        }
+        current.value = value;
+      }
+      else {
+        list.append(key, value);
       }
     }
-    bucket.push({ [key]: value })
   }
 
   get(key) {
     let bucket = this.buckets[this.hash(key)];
-    for (const obj of bucket) {
-      if (obj[key] !== undefined) {
-        return obj[key];
+    if (bucket.length) {
+      let list = bucket[0];
+      const index = list.find(key);
+      let count = 0;
+      let current = list.head;
+      while (count != index) {
+        count++;
+        current = current.next;
       }
+      return current.value;
     }
     return null;
   }
 
   has(key) {
     let bucket = this.buckets[this.hash(key)];
-    for (const obj of bucket) {
-      if (obj[key] !== undefined) {
-        return true
-      }
-    }
-    return false
+    let list = bucket[0];
+    return list.contains(key)
   }
 
   remove(key) {
@@ -67,13 +83,13 @@ class HashMap {
   }
 
   length() {
-    
+
   }
 }
 
 const test = new HashMap(8, 1);
-console.log(test.hash('testr'))
-console.log(test.hash('blabla'))
-test.set('testr', 'value1')
-test.set('blabla', 'value1')
-console.log(test.buckets)
+const test_list = test.buckets[0][0];
+test.set('testr', 'value0');
+test.set('blabla', 'value1');
+test.set('tea', 'value2');
+console.log(test.has('testr'))
