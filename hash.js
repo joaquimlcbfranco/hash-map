@@ -88,17 +88,55 @@ class HashMap {
   }
 
   length() {
+    let size = 0;
+    for (let bucket of this.buckets) {
+      if (bucket.length === 0) {
+        continue;
+      }
+      else {
+        let list = bucket[0];
+        size += +list.getSize();
+      }
+    }
+    return size;
+  }
+
+  clear() {
+    for (let i = 0; i < this.buckets.length; i++) {
+      this.buckets[i] = [];
+    }
+  }
+
+  keys() {
+    let keysArr = [];
+    for (let bucket of this.buckets) {
+      if (bucket.length === 0) {
+        continue;
+      }
+      else {
+        let list = bucket[0];
+        
+      }
+    }
+  }
+
+  values() {
+
+  }
+
+  entries() {
 
   }
 }
 
 const test = new HashMap(8, 1);
-const test_list = test.buckets[0];
 test.set('testr', 'value0');
 test.set('blabla', 'value1');
 test.set('tea', 'value2');
-console.log(test_list[0]);
+setTimeout(() => {  
+  console.log(test);
+  test.clear()
+}, 0)
 setTimeout(() => {
-  test.remove('blabla');
-  console.log(test_list[0]);
+  console.log(test);
 }, 0)
